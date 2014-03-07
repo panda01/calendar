@@ -1,0 +1,26 @@
+<html>
+  <head>
+    <title>Calendar Plugin</title>
+
+    <link rel="stylesheet" href="css/lib/bootstrap.css">
+    <link rel="stylesheet" href="css/calendar.css">
+
+  </head>
+  <body>
+    <div class="page-container">
+      <input name="date" id="date" type="text" />
+    </div>
+
+    <script type="text/javascript" src="js/libs/jquery.js"></script>
+    <script type="text/javascript" src="js/libs/moment.js"></script>
+    <script type="text/javascript" src="js/utils.js"></script>
+    <script type="text/javascript" src="js/calendar.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function() {
+          $("#date").calendar({
+            endDate: moment().add("weeks", 2)
+          });
+      });
+    </script>
+  </body>
+</html>

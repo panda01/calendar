@@ -1,0 +1,70 @@
+div.popover.js-calendar {
+  position: absolute;
+  max-width: 650px;
+  color: #fffeff;
+  font-size: 13px; }
+  div.popover.js-calendar .arrow {
+    left: 20px; }
+  div.popover.js-calendar .glyphicon {
+    cursor: pointer; }
+    div.popover.js-calendar .glyphicon.prev {
+      float: left; }
+    div.popover.js-calendar .glyphicon.next {
+      float: right; }
+    div.popover.js-calendar .glyphicon.disable {
+      cursor: auto;
+      color: #999; }
+  div.popover.js-calendar .clearfix {
+    clear: both; }
+  div.popover.js-calendar .day,
+  div.popover.js-calendar .month,
+  div.popover.js-calendar .year,
+  div.popover.js-calendar .suggestion,
+  div.popover.js-calendar table th {
+    text-align: center;
+    cursor: pointer; }
+  div.popover.js-calendar .suggestions {
+    float: left;
+    min-width: 150px;
+    list-style-type: none;
+    padding: 0; }
+    div.popover.js-calendar .suggestions .suggestion {
+      background-color: #428bca;
+      border: 1px solid #357ebd;
+      padding: 2px 5px;
+      text-transform: capitalize;
+      border-radius: 4px;
+      text-align: left; }
+      div.popover.js-calendar .suggestions .suggestion + .suggestion {
+        margin-top: 5px; }
+  div.popover.js-calendar .calendar {
+    float: left; }
+    div.popover.js-calendar .calendar table {
+      font-size: 14px;
+      border-collapse: separate;
+      min-width: 150px;
+      border-spacing: 3px; }
+    div.popover.js-calendar .calendar .year,
+    div.popover.js-calendar .calendar .month,
+    div.popover.js-calendar .calendar .day {
+      border-radius: 3px;
+      padding: 6px; }
+      div.popover.js-calendar .calendar .year.highlight,
+      div.popover.js-calendar .calendar .month.highlight,
+      div.popover.js-calendar .calendar .day.highlight {
+        background-color: #39b3d7;
+        color: #fffeff; }
+      div.popover.js-calendar .calendar .year:hover,
+      div.popover.js-calendar .calendar .month:hover,
+      div.popover.js-calendar .calendar .day:hover {
+        background-color: #32add0;
+        color: #fffeff; }
+      div.popover.js-calendar .calendar .year.disable,
+      div.popover.js-calendar .calendar .month.disable,
+      div.popover.js-calendar .calendar .day.disable {
+        color: #999;
+        cursor: auto;
+        background-color: transparent; }
+    div.popover.js-calendar .calendar + .suggestions {
+      margin-left: 20px;
+      margin-right: 7px; }

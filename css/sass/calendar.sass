@@ -1,0 +1,90 @@
+    
+
+div.popover.js-calendar {
+    position: absolute;
+    max-width: 650px;
+    color: #fffeff;
+    font-size: 13px;
+    
+    
+    .arrow {
+    left: 20px;
+    }
+
+    .glyphicon {
+        cursor: pointer;
+        &.prev { float: left; }
+        &.next { float: right; }
+        &.disable {
+            cursor: auto;
+            color: #999;
+        }
+    }
+    .clearfix {
+        clear: both;
+    }
+    .day,
+    .month,
+    .year,
+    .suggestion,
+    table th {
+        text-align: center;
+        cursor: pointer;
+    }
+    .suggestions {
+        float: left;
+        min-width: 150px;
+        list-style-type: none;
+        padding: 0;
+        .suggestion {
+        background-color: #428bca;
+        border: 1px solid #357ebd;
+        padding: 2px 5px;
+        text-transform: capitalize;
+        border-radius: 4px;
+        text-align: left;
+        
+        & + .suggestion {
+            margin-top: 5px;
+        }
+        }
+    }
+
+    .calendar {
+        float: left;
+
+        table {
+        font-size: 14px;
+        border-collapse: separate;
+        min-width: 150px;
+        border-spacing: 3px;
+
+        }
+        .year,
+        .month,
+        .day {
+            border-radius: 3px;
+            padding: 6px;
+            &.highlight {
+                background-color: #39b3d7;
+                color: #fffeff;
+            }
+            &:hover {
+                background-color: #32add0;
+                color: #fffeff;
+            }
+            &.disable {
+                color: #999;
+                cursor: auto;
+                background-color: transparent;
+            }
+        }
+        & + .suggestions {
+            margin-left: 20px;
+            margin-right: 7px;
+        }
+
+    }
+
+
+}
