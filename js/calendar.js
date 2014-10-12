@@ -1,3 +1,8 @@
+/*
+ *  JsCalendar
+ *
+ *  Depends on the awesome momentjs
+ */
 (function($) {
 
     function Calendar($el, sett) {
@@ -6,50 +11,102 @@
 
         this.settings = {};
         $.extend(this.settings, Calendar.prototype.options, sett);
+        if(sett.format) {
+            // also extend the format, to be sure that we don't overwrite them in a silly way
+            this.settings.format = $.extend(Calendar.prototype.options.format, sett.format);
+        }
+
 
         // initialize the calendar
         this.initDOM();
-        //this.initEvents();
-
-        // for tests only
-        this.show();
     }
 
     $.extend(Calendar.prototype, {
         // instansiation methods
         initDOM: function() {
             this.cals = [];
-            
+
             // Draw one calendar
             // draw the suggestions if this isn't a range calendar
             this.cals.push(new $Cal(_cleanDate(this._("currDate")), this));
-            
+
             // if this is a range calendar
-            if(this._("endDate")) {
+            if(this._hasEnd()) {
                 // draw the second calendar, and definitely draw the suggestions
                 this.cals.push(new $Cal(_cleanDate(this._("endDate")), this));
             }
-            
+
             // The container for the inputs
-            this.$ins = _C("div")
-                .addClass("js-calendar inputs")
-                .appendTo(this.$selIn.parent());
-            
+            this.$ins = _C("div.js-calendar.js-calendar-inputs")
+                .insertAfter(this.$selIn);
+
             // the container for the calendars
-            this.$el = _C("div")
-                .addClass("popover js-calendar bottom")
-				.append(_C("div").addClass("arrow"));
-                
-                
+            this.$el = _C("div.popover js-calendar bottom")
+			        	.append(_C("div").addClass("arrow"));
+
             // for every calendar add them to our wrapping elements
             this.cals.forEach(function(cal) {
                 this.$ins.append(cal.$in);
                 this.$el.append(cal.$el);
             }.bind(this));
-            
-            this.$el.append(this.initSuggestions());
+
+            // Add a dash in between range dates
+            if(this._hasEnd()) {
+                this.$ins.children().first().after("<span class='dash'>&nbsp;-&nbsp;</span>");
+            }
+
+            // add a class for the number of calendars
+            this.$ins.addClass("cals-count-" + this.cals.length);
+
+            // only if their are suggestions draw them
+            if(this._hasSuggestions()) {
+                this.$el.prepend(this.initSuggestions());
+                this.$ins.append(this.$suggestion = _C("div.suggestion"));
+            }
+
+            // Attach some events
+            this.$ins.on({
+                "click.calendar": function(e) {
+                    if(!this.isVisible()) {
+                        this.show();
+                    }
+                }.bind(this),
+                "focus.calendar": function(evt) {
+                    if(!this.isVisible()) {
+                        this.show();
+                    }
+                }.bind(this)
+            });
+
+            // handle clicking of suggestions
+            this.$el.on("click.calendar", ".suggestion", function(e) {
+                this.setDate($(e.target).data("value"));
+                this.hide();
+            }.bind(this));
+
+            // hide the input give to us
+            this.$selIn.hide();
+        },
+        listenForDocumentClick: function() {
+            var func = function(e) {
+                // if the click is out of out calendar and our input
+                if($(e.target).closest(this.$ins.add(this.$el)).length === 0){
+                    this.hide();
+                    // unbind this event
+                    $('body').off('mousedown.calendar', func);
+                    this.parseOnBlur = false;
+                }
+            }.bind(this);
+            $('body').on("mousedown.calendar", func);
         },
         isVisible: function() { return this.$el.parent().length > 0; },
+        // do everything to update the calendars
+        render: function() {
+            this.cals.forEach(function(cal) {
+                cal._draw();
+                cal.update();
+            });
+        },
         // draw both of the calendars or one if there is only one
         draw: function() { this.cals.forEach(function(cal){ cal._draw()}); },
         // show the Calendar plugin
@@ -57,74 +114,172 @@
             this.draw();
             this.place();
             this.$el.show();
+            this.listenForDocumentClick();
+            this.$ins.addClass("visible");
+            this.parseOnBlur = true;
         },
-        // hide the calendar plugin
+        // hide the calendar dropdown
         hide: function() {
             this.$el
                 .hide()
                 .detach();
+            this.$ins.removeClass("visible");
         },
         place: function() {
-            var loc = this.$selIn.offset();
+            var loc = this.$ins.offset(),
+                rentLoc = $($.map(this.$ins.parents(), function(el, i) {
+                    var $el = $(el);
+                    return ($el.css("position").indexOf("absolute") > -1 ? el : undefined);
+                })[0]).offset();
             // if it's already placed don't place it again
             if(!this.isVisible()) {
                 // otherwise based on options, add it to where it belongs in the dom
-                this.$el.appendTo(this._("appendToBody") ? $("body") : this.$selIn.parent());
+                this.$el.appendTo(this._("appendToBody") ? $("body") : this.$ins.parent());
             }
-
+            
             // finally place the calendar popup
             this.$el.css({
-                left: loc.left,
-                top: loc.top + this.$ins.outerHeight() + 20
+                left: loc.left - (this._("appendToBody") ? 0 : rentLoc.left),
+                top: loc.top + this.$ins.outerHeight() - (this._("appendToBody") ? 0 : rentLoc.top)
             });
         },
         initSuggestions: function() {
-            var $ul = _C("ul").addClass("suggestions"),
+            var $ul = _C("ul"),
                 suggs = this._("suggestions"),
                 sugg = null,
+                $s = null,
                 range = this._range;
 
             for(var l = suggs.length, i = 0; i < l; i++) {
                 sugg = suggs[i];
-                _cleanDate(sugg.moment);
-                $ul.append(_C("li")
-                            .html(sugg.text)
-                            .data("date", sugg.moment)
-                            .addClass("suggestion" + ((sugg.moment).isSame(this._range, "day") ? " higlight" : "")));
+                _cleanDate(sugg.currDate);
+                $ul.append($s = _C("li.suggestion"));
+                $s
+                    .html(sugg.text)
+                    .data("value", {
+                        currDate: sugg.currDate, 
+                        endDate: sugg.endDate, 
+                        text: sugg.text
+                    });
+//                    .toggleClass("highlight", sugg.currDate.isSame(this._range, "day")))
             }
-            return $ul;
+            return _C("div.suggestions").append(_C("div.title").html("Suggestions")).append($ul);
         },
         options: {
             currDate: moment(),
             endDate: null,
             // if it's a date range
-            //endDate: moment().add("weeks", 2),
-            //minDate: -Infinity,
-            //maxDate: Infinity,
-            // for testing
-            maxDate: moment().add("years", 1),
-            // for testing
-            minDate: moment().subtract("years", 1),
+            // endDate: moment().add("weeks", 2),
+            minDate: -Infinity,
+            maxDate: Infinity,
             suggestions: [{
                 text: "today",
-                moment: moment()
+                currDate: moment()
             }, {
                 text: "Yesterday",
-                moment: moment().subtract("day", 1)
+                currDate: moment().subtract("day", 1)
             }, {
                 text: "1 week ago",
-                moment: moment().subtract("week", 1)
+                currDate: moment().subtract("week", 1)
             }, {
                 text: "1 month ago",
-                moment: moment().subtract("month", 1)
+                currDate: moment().subtract("month", 1)
             }],
             appendToBody: false,
             format: {
                 dow: "dd",
-                input: "M/D/YYYY",
+                input: "MMMM D, YYYY",
+            },
+        },
+        dateChanged: function(cal) {
+            // only move the dates if this has two calendars
+            // causes the pushing effect when you try and put the start
+            // date after the end date, or the endDate before the start date
+            if(this._hasEnd()) {
+                // if this is the start calendar
+                if(cal === this.cals[0]) {
+                    // if the start date is after the end date
+                    if(cal._isAfter(cal._date, this.date(1))) {
+                        // set the end date to the start date
+                        this.cals[1]._setDate(cal._date.clone());
+                        this.cals[1].update();
+                        this.cals[1]._draw();
+                    }
+                } else {
+                    // if the end calendar is before the start date
+                    if(cal._isBefore(cal._date, this.date(0))) {
+                        // set the end date to the start date
+                        this.cals[0]._setDate(cal._date.clone());
+                        this.cals[0].update();
+                        this.cals[0]._draw();
+                    }
+                }
+            }
+            // clear out the suggestion text
+            this.setSuggestion();
+            // just trigger a change event and broadcast
+            this.$selIn.trigger("change.calendar", [this.date()]);
+        },
+        date: function(which) {
+            // they didn't specify so return everything we have!!!
+            if(typeof which === "undefined") {
+                if(this._hasEnd()) {
+                    return {
+                        "currDate": this.cals[0]._date.clone(),
+                        "endDate": this.cals[1]._date.clone()
+                    };
+                }
+                which = 0;
+            }
+            return this.cals[which]._date.clone();
+        },
+        niceDate: function(format) {
+            var dates = this.date();
+            if(dates.currDate && dates.endDate) {
+                return {
+                    currDate: dates.currDate.format(format || this._("format").input),
+                    endDate: dates.endDate.format(format || this._("format").input),
+                    suggestion: this.getSuggestion().text
+                }
+            } else {
+                return dates.format(format || this._("format").input);
             }
         },
-
+        // Either return false, or the suggestion that is currently being used
+        // if name is specified, return the suggestion with that name regardless of which one we're using
+        getSuggestion: function(name) {
+            return this._("suggestions").reduce(function(old, curr) {
+                return old || ((name && curr.text === name) || (!name && curr.currDate === this.cals[0]._date && (!this._hasEnd() || (this._hasEnd() && curr.endDate === this.cals[1]._date))) ? curr : old);
+            }.bind(this), false);
+        },
+        // set a marker for which suggestion was clicked
+        setSuggestion: function(name) {
+            if(typeof name !== "undefined") {
+                this.currentSuggestion = name;
+            }
+            this.$suggestion.html(this.currentSuggestion || "");
+            this.$ins.toggleClass("show-suggestion", !!this.currentSuggestion);
+        },
+        // takes an object with both dates for range calendars, or just the single date for regular ones
+        setDate: function(obj) {
+            var set = function(start, end) {
+                this.cals[0]._setDate(start);
+                if(end) {
+                    this.cals[1]._setDate(end);
+                }
+            }.bind(this);
+            if(obj.text) {
+                obj = this.getSuggestion(obj.text) || obj;
+                this.setSuggestion(obj.text);
+                set(obj.currDate, obj.endDate);
+            } else if(this._hasEnd()) {     // A range calendar without suggestions
+                set(obj.currDate, obj.endDate);
+                this.setSuggestion(obj.text);
+            } else {    // otherwise expect to be passed a moment object to be set on the calendar
+                set(obj);
+            }
+            this.render();
+        },
         // Private functional methods
         //
         // Getter and setter for the settings
@@ -135,7 +290,7 @@
             }
             return old;
         },
-        
+
         _isSame: function(date, tolerance, otherDate) {
             otherDate = otherDate || this._date;
             tolerance = tolerance || "day";
@@ -148,26 +303,30 @@
         _isAfter: function(date, max) {
             max = max || this._("maxDate");
             return (max === Infinity ? false : _cleanDate(date) > _cleanDate(max));
-        }
+        },
+        // is this a range calendar or does it just have one date to return
+        _hasEnd: function() { return !!this._("endDate"); },
+        // does it have suggestions?
+        _hasSuggestions: function() { return this._("suggestions").length > 0; }
     });
     
     function $Cal(date, par, sett) {
         this.settings = {};
         this._date = date;
         this._parent = par;
-    
+
         this.initDOM();
         this.initEvents();
-        
+
         return this;
     }
-    
+
     $.extend($Cal.prototype, {
         initDOM: function() {
             // draw a frame for the calendar to be added to
             var drawFrame = function() {
                 // append all of the calendar parts
-                return _C("div").addClass("calendar")
+                return _C("div.calendar")
                     .append(this.initYears().hide())
                     .append(this.initMonths().hide())
                     .append(this.initDays());
@@ -175,10 +334,11 @@
             drawInput = function(rangeIn) {
                 return _C("input")
                     .attr("type", "text")
+                    .attr("size", "")
                     .addClass("js-input")
                     .toggleClass("range", rangeIn);
             }.bind(this);
-            this.$el = drawFrame(true);
+            this.$el = drawFrame();
             this.$in = drawInput(true);
             this._draw("days", this._date);
             this.update();
@@ -191,37 +351,35 @@
             // handles typing in
             //      including arrow key navigation and parsing after blur
             this.$in.on({
-                focus: function(evt) {
-                    if(!this.isVisible()) {
-                        this.show();
-                    }
-                }.bind(this),
                 blur: function(evt) {
-                    this.parse();
-                    this.update();
-                }.bind(this),
-                click: function() {
-                    if(!this.isVisible()) {
-                        this.show();
+                    if(this._parent.parseOnBlur) {
+                        this.parse();
                     }
                 }.bind(this),
                 keydown: function(evt) {
                     switch(evt.which) {
-                        case 27:        // hide on escape
-                            this.hide();
+                        // hide on escape
+                        case 27:
+                            this.parse();
+                            this._parent.hide();
                             break;
-                        case 13:        // parse and set on enter
+                        // parse and set on enter
+                        case 13:
                             this.parse();
                             this._showView();
                             break;
-						case 37: 		// left
-						case 38: 		// up
-						case 39: 		// right
-						case 40: 		// down
-                            this._date.clone()[evt.which < 39 ? "subtract" : "add"]((evt.which % 2 === 0 ? "weeks" : "days"), 1);
+                        // Change the dates with the arrow keys
+                        // TODO make this work no matter which calendar view(days, months, years) you're in.
+                        case 37: 		    // left
+                        case 38: 		    // up
+                        case 39: 		    // right
+                        case 40: 		    // down
+                            this._setDate(this._date.clone()[evt.which < 39 ? "subtract" : "add"]((evt.which % 2 === 0 ? "weeks" : "days"), 1));
+                            this._parent.setSuggestion(false);
                             this.update();
                             this._showView();
-						
+                            evt.preventDefault();
+                            break;
                         default:
                             console.info("Which: " + evt.which);
                             break;
@@ -229,72 +387,6 @@
                 }.bind(this)
             });
 
-            // a simple function to obfuscate the $el the person selected.
-            // like the .next and .prev buttons, the dates, the years, the months and years
-            // pretty much all of the interactions inside of the calendar popdown
-            //
-            // provides helper methods to make processing events easier
-            var Sel = (function () {
-                function $el(el) {
-                    this.$el = $(el);
-                    // the wrapping view table or ul
-                    this.$t = this.$el.closest("table, ul");
-
-                    this.date = this.$el.data("date");
-                }
-
-                // the different names for the different views of the calendar
-                // TODO move me higher up the scope, everything in calendar uses this.
-                var v = [
-                    "days",
-                    "months",
-                    "years",
-                    undefined,
-                    "suggestions"
-                ];
-                // nice helpers
-                v.d = v[0];
-                v.m = v[1];
-                v.y = v[2];
-                v.s = v[4];
-
-                var has = function($s, str) {
-                    return $s.length ? $s[0].className.split(" ").indexOf(str.toLowerCase()) > -1 : false;
-                };
-
-
-                $el.prototype.isDisabled = function() { return has(this.$el, "disable"); };
-
-                // TODO why are all of theses functions?
-                //
-                // is this something inside of the Days of the Month picker,
-                // the months of the year, of the years of the decade?
-                $el.prototype.isDom = function() { return has(this.$t, v.d); };
-                $el.prototype.isMoy = function() { return has(this.$t, v.m); };
-                $el.prototype.isYod = function() { return has(this.$t, v.y); };
-
-
-                // $el th helpers
-                $el.prototype.isDir = function() { return has(this.$el, "next") || has(this.$el, "prev"); };
-                $el.prototype.isNext = function() { return has(this.$el, "next"); };
-                $el.prototype.isTitle = function() { return has(this.$el, "title"); };
-
-                // tenary operators FTW
-                // return the string representing which one this is
-                $el.prototype.which = function() { return this.isDom() ? v.d : (this.isMoy() ? v.m : ( this.isYod() ? v.y : v.s)); };
-				$el.prototype.singular = function(w) {
-					return w.substr(0, w.length - 1);
-				}
-                // return the containing timespan, ie return months for days,
-                // years for months, and undefined for years.
-                $el.prototype.parent = function() { return v[v.indexOf(this.which()) + 1]; };
-                // the turn the contained timespan, ie return months for years,
-                // days for months, and undefined for days.
-                $el.prototype.child = function() { return v[v.indexOf(this.which()) - 1]; };
-
-
-                return $el;
-            }());
 
 
             // the events for inside of the calendar.
@@ -303,6 +395,10 @@
                     var sel = new Sel(evt.target);
 
                     if(!sel.isDisabled()) {
+                        // weird you can change the date of something without it getting focus...
+                        if(!this.hasFocus()) {
+                            this.$in.focus();
+                        }
                         if(sel.isTitle()) {
                             if(sel.parent()) {
                                 this._showView(sel.parent(), sel.date);
@@ -318,22 +414,47 @@
                                 this._showView(sel.child(), sel.date);
                             } else if(sel.date) {    // otherwise we must be clicking on days or suggestions, set the date and keep it going
                                 this._setDate(sel.date);
+                                this._parent.setSuggestion(false);
                                 this.update();
+                                this._draw();
+                            } else {
+                                // stops the calendar from closing when you don't click on anything but the background
+                                evt.stopPropagation();
                             }
                         }
                     }
                 }.bind(this),
                 mousedown: function(e) {
                     e.preventDefault();
-                    e.stopPropagation();
                 }
             });
         },
 
         // updates the input with the current date
         update: function(which) {
-            var f = this._("format").input;
-            this.$in.val(this._date.format(f));
+            var d = this._date.format(this._("format").input),
+                // calculate the dynamic width of the input
+                dWidth = (function($in) {
+                    // create a span to dynamically change the width of the inputs
+                    var $span = _C("span")
+                            .html(d)
+                            .css({
+                                'font-size': $in.css('font-size'),
+                                'letter-spacing': $in.css('letter-spacing'),
+                                left: "-9999px",
+                                position: "absolute",
+                                width: 'auto'
+                            })
+                            .appendTo('body'),
+                        width = $span.width();
+                    // remove the span
+                    $span.remove();
+                    return width;
+                }(this.$in));
+            // change the input value and width 
+            this.$in
+                .val(d)
+                .width(dWidth + 8);         // Add 8 pixels just in case
         },
         // tries to parse the inputs value
         // and calls update with either the new date,
@@ -351,12 +472,10 @@
             var count = 7,
                 day = moment().day(0), //monday
                 // create the table
-                el = _C("table")
-                    .addClass("days")
-                    .append(this._CHead(7));
+                el = _C("table.days").append(this._CHead(7));
 
             // add the dow tr
-            el.children("thead").append(_C("tr").addClass("dow"));
+            el.children("thead").append(_C("tr.dow"));
 
             // TODO use variables for class names
             $hand = el.find("tr.dow");
@@ -373,40 +492,53 @@
             return el;
         },
         initMonths: function(date) {
-            return _C("table").addClass("months").append(this._CHead(2)).append(_C("tbody"));
+            return _C("table.months").append(this._CHead(2)).append(_C("tbody"));
         },
         initYears: function() {
-            return _C("table").addClass("years").append(this._CHead(2)).append(_C("tbody"));
+            return _C("table.years").append(this._CHead(2)).append(_C("tbody"));
         },
         _: function(attr, val) {
             var old = this.settings[attr];
             // return the parent if this doesn't have the option;
             if(u.isUndef(old)) {
-                return this._parent._(attr, val); 
+                return this._parent._(attr, val);
             }
             if(!u.isUndef(val)) {
                 this.settings[attr] = val;
             }
             return old;
         },
-        // sets the dates, checks to make sure it's in the min max range, 
+        // sets the dates, checks to make sure it's in the min max range,
         // and that the end date doesn't end up before the start date and vice versa
         _setDate: function(val) {
+            if(typeof val === "string") {
+                val = _cleanDate(moment(val));
+            }
             // Check and make sure the date isn't outside of the range
             if(this._isBefore(val)) {
                 val = this._("minDate");
             } else if(this._isAfter(val)) {
                 val = this._("maxDate");
             }
-            
+
+            var changed = (!this._date.isSame(val, "day"));
+
             this._date = val;
+
+            if(changed) {
+                if(this._parent.isVisible()) {
+                    this._draw();
+                }
+                this.update();
+            }
+            this._parent.dateChanged(this);
         },
         // create a table head
         _CHead: function(span) {
             return _C("thead").append(_C("tr").append(_C("th").attr("colspan", span)
-                    .append(_C("div").addClass("glyphicon glyphicon-chevron-left prev"))
-                    .append(_C("span").addClass("title"))
-                    .append(_C("div").addClass("glyphicon glyphicon-chevron-right next"))));
+                    .append(_C("div.glyphicon.glyphicon-chevron-left.prev").html("&lsaquo;"))
+                    .append(_C("span.title"))
+                    .append(_C("div.glyphicon.glyphicon-chevron-right.next").html("&rsaquo;"))));
         },
         _isBefore: function(date, min) {
             min = min || this._("minDate");
@@ -416,6 +548,7 @@
             max = max || this._("maxDate");
             return (max === Infinity ? false : _cleanDate(date) > _cleanDate(max));
         },
+        hasFocus: function() { return this.$in.is(":focus"); },
          // draw the view,
         // then show it to the user
         //
@@ -564,15 +697,112 @@
         });
 
     };
-    
+
     // way faster way of typing create element or fragment
     var _C = function(which) {
-        if(which === "frag") {
-            return $(document.createDocumentFragment());
+            var c = function(w) {
+              if(w === "frag") {
+                  return $(document.createDocumentFragment());
+              }
+              return $(document.createElement(w));
+            };
+            var split = which.split("."),
+                $e = c(split.shift());
+            $e.addClass(split.join(" "));
+            return $e;
+        },
+        _cleanDate = function(date) {
+            return (date ? moment(date).hour(0).minute(0).second(0).millisecond(1) : undefined);
+        },
+        // a simple function to obfuscate the $el the person selected.
+        // like the .next and .prev buttons, the dates, the years, the months and years
+        // pretty much all of the interactions inside of the calendar popdown
+        //
+        // provides helper methods to make processing events easier
+        Sel = (function () {
+            function $el(el) {
+                this.$el = $(el);
+                // the wrapping view table or ul
+                this.$t = this.$el.closest("table, ul");
+
+                this.date = this.$el.data("date");
+            }
+
+            // the different names for the different views of the calendar
+            // TODO move me higher up the scope, everything in calendar uses this.
+            var v = [
+                "days",
+                "months",
+                "years",
+                undefined,
+                "suggestions"
+            ];
+            // nice helpers
+            v.d = v[0];
+            v.m = v[1];
+            v.y = v[2];
+            v.s = v[4];
+
+            var has = function($s, str) {
+                return $s.length ? $s[0].className.split(" ").indexOf(str.toLowerCase()) > -1 : false;
+            };
+
+
+            $el.prototype.isDisabled = function() { return has(this.$el, "disable"); };
+
+            // TODO why are all of theses functions?
+            //
+            // is this something inside of the Days of the Month picker,
+            // the months of the year, of the years of the decade?
+            $el.prototype.isDom = function() { return has(this.$t, v.d); };
+            $el.prototype.isMoy = function() { return has(this.$t, v.m); };
+            $el.prototype.isYod = function() { return has(this.$t, v.y); };
+
+
+            // $el th helpers
+            $el.prototype.isDir = function() { return has(this.$el, "next") || has(this.$el, "prev"); };
+            $el.prototype.isNext = function() { return has(this.$el, "next"); };
+            $el.prototype.isTitle = function() { return has(this.$el, "title"); };
+
+            // tenary operators FTW
+            // return the string representing which one this is
+            $el.prototype.which = function() { return this.isDom() ? v.d : (this.isMoy() ? v.m : ( this.isYod() ? v.y : v.s)); };
+            $el.prototype.singular = function(w) {
+                return w.substr(0, w.length - 1);
+            }
+            // return the containing timespan, ie return months for days,
+            // years for months, and undefined for years.
+            $el.prototype.parent = function() { return v[v.indexOf(this.which()) + 1]; };
+            // the turn the contained timespan, ie return months for years,
+            // days for months, and undefined for days.
+            $el.prototype.child = function() { return v[v.indexOf(this.which()) - 1]; };
+
+
+            return $el;
+        }());
+    var u = (function() {
+        function isTypeOf(type, val) {
+            return typeof val === type;
         }
-        return $(document.createElement(which));
-    };
-    var _cleanDate = function(date) {
-        return (date ? date.hour(0).minute(0).second(0).millisecond(1) : undefined);
-    };
+
+        function isUndefined(val) {
+            return isTypeOf("undefined", val);
+        }
+        function isObject(val) {
+            return isTypeOf("object", val);
+        }
+        function isNumber(val) {
+            return isTypeOf("number", val);
+        }
+        function isString(val) {
+            return isTypeOf("string", val);
+        }
+        
+        return {
+            isUndef: isUndefined,
+            isObj: isObject,
+            isNum: isNumber,
+            isStr: isString
+        }
+    }());
 }(jQuery))
