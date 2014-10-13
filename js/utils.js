@@ -1,4 +1,5 @@
 (function() {
+    'use strict';
 
     function isTypeOf(type, val) {
         return typeof val === type;

@@ -17,9 +17,15 @@ module.exports = function(grunt) {
             options: {
                 curly: true,
                 eqeqeq: true,
-                "-W099": true
+                maxparams: 3,
+                strict: true,
+                unused: true,
+                // suppress warnings about mixed spaces and tabs
+                "-W099": true,
+                // supress warnings about Constructors not starting with Capitals
+                "-W055": true
             },
-            files: ['js/**/*.js', 'Gruntfile.js']
+            files: ['js/**/*.js']
         }
     });
 

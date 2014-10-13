@@ -4,6 +4,7 @@
  *  Depends on the awesome momentjs
  */
 (function($) {
+    'use strict';
 
     function Calendar($el, sett) {
         // selected input
@@ -66,12 +67,12 @@
 
             // Attach some events
             this.$ins.on({
-                "click.calendar": function(e) {
+                "click.calendar": function() {
                     if(!this.isVisible()) {
                         this.show();
                     }
                 }.bind(this),
-                "focus.calendar": function(evt) {
+                "focus.calendar": function() {
                     if(!this.isVisible()) {
                         this.show();
                     }
@@ -128,7 +129,7 @@
         place: function() {
             var loc = this.$ins.offset(),
                 // go through and find the parent with the absolute position, to assure the calendar is placed properly
-                absoluteParentLoc = $([].reduce.call(this.$ins.parents(), function(prev, el, index, arr) {
+                absoluteParentLoc = $([].reduce.call(this.$ins.parents(), function(prev, el) {
                     var $el = $(el);
                     return prev || ($el.css("position").indexOf("absolute") > -1 ? el : false);
                 }, false)).offset() || {left: 0, top: 0},
@@ -150,8 +151,8 @@
             var $ul = _C("ul"),
                 suggs = this._("suggestions"),
                 sugg = null,
-                $s = null,
-                range = this._range;
+                $s = null;
+                // range = this._range;
 
             for(var l = suggs.length, i = 0; i < l; i++) {
                 sugg = suggs[i];
@@ -313,7 +314,7 @@
         _hasSuggestions: function() { return this._("suggestions").length > 0; }
     });
     
-    function $Cal(date, par, sett) {
+    function $Cal(date, par) {
         this.settings = {};
         this._date = date;
         this._parent = par;
@@ -347,14 +348,14 @@
             this.update();
         },
         initEvents: function() {
-            var shouldParse = false;
+            // var shouldParse = false;
             // the events for the input
             //
             // handles blur and focus behavior
             // handles typing in
             //      including arrow key navigation and parsing after blur
             this.$in.on({
-                blur: function(evt) {
+                blur: function() {
                     if(this._parent.parseOnBlur) {
                         this.parse();
                     }
@@ -434,7 +435,7 @@
         },
 
         // updates the input with the current date
-        update: function(which) {
+        update: function() {
             var d = this._date.format(this._("format").input),
                 // calculate the dynamic width of the input
                 dWidth = (function($in) {
@@ -494,9 +495,11 @@
 
             return el;
         },
-        initMonths: function(date) {
+        // append the months table to draw the months in
+        initMonths: function() {
             return _C("table.months").append(this._CHead(2)).append(_C("tbody"));
         },
+        // append the years table to draw the years in
         initYears: function() {
             return _C("table.years").append(this._CHead(2)).append(_C("tbody"));
         },
