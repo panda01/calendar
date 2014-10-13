@@ -42,7 +42,7 @@
 
             // the container for the calendars
             this.$el = _C("div.popover js-calendar bottom")
-			        	.append(_C("div").addClass("arrow"));
+                        .append(_C("div").addClass("arrow"));
 
             // for every calendar add them to our wrapping elements
             this.cals.forEach(function(cal) {
@@ -108,7 +108,7 @@
             });
         },
         // draw both of the calendars or one if there is only one
-        draw: function() { this.cals.forEach(function(cal){ cal._draw()}); },
+        draw: function() { this.cals.forEach(function(cal){ cal._draw(); }); },
         // show the Calendar plugin
         show: function() {
             this.draw();
@@ -243,7 +243,7 @@
                     currDate: dates.currDate.format(format || this._("format").input),
                     endDate: dates.endDate.format(format || this._("format").input),
                     suggestion: this.getSuggestion().text
-                }
+                };
             } else {
                 return dates.format(format || this._("format").input);
             }
@@ -373,7 +373,7 @@
                             break;
                         // Change the dates with the arrow keys
                         // TODO make this work no matter which calendar view(days, months, years) you're in.
-                        case 37: 		    // left
+                        case 37:            // left
                         case 38: 		    // up
                         case 39: 		    // right
                         case 40: 		    // down
@@ -772,7 +772,7 @@
             $el.prototype.which = function() { return this.isDom() ? v.d : (this.isMoy() ? v.m : ( this.isYod() ? v.y : v.s)); };
             $el.prototype.singular = function(w) {
                 return w.substr(0, w.length - 1);
-            }
+            };
             // return the containing timespan, ie return months for days,
             // years for months, and undefined for years.
             $el.prototype.parent = function() { return v[v.indexOf(this.which()) + 1]; };
@@ -806,6 +806,6 @@
             isObj: isObject,
             isNum: isNumber,
             isStr: isString
-        }
+        };
     }());
-}(jQuery))
+}(jQuery));

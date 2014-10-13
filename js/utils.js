@@ -25,5 +25,5 @@
         isObj: isObject,
         isNum: isNumber,
         isStr: isString
-    }
+    };
 }());

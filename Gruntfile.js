@@ -12,11 +12,20 @@ module.exports = function(grunt) {
                     "css/calendar.css": "css/less/calendar.less"
                 }
             }
+        },
+        jshint: {
+            options: {
+                curly: true,
+                eqeqeq: true,
+                "-W099": true
+            },
+            files: ['js/**/*.js', 'Gruntfile.js']
         }
     });
 
 
     grunt.loadNpmTasks('grunt-contrib-less');
+    grunt.loadNpmTasks('grunt-contrib-jshint');
 
     grunt.registerTask('default', ['less']);
-}
+};
