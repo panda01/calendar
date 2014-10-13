@@ -7,16 +7,16 @@
 
 
     function isUndefined(val) {
-        return isTypeOf("undefined", val);
+        return isTypeOf('undefined', val);
     }
     function isObject(val) {
-        return isTypeOf("object", val);
+        return isTypeOf('object', val);
     }
     function isNumber(val) {
-        return isTypeOf("number", val);
+        return isTypeOf('number', val);
     }
     function isString(val) {
-        return isTypeOf("string", val);
+        return isTypeOf('string', val);
     }
 
     // lazyloading utility?

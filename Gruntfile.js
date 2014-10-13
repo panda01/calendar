@@ -20,10 +20,21 @@ module.exports = function(grunt) {
                 maxparams: 3,
                 strict: true,
                 unused: true,
+                immed: true,
+                latedef: true,
+                noempty: true,
+                nonew: true,
+                quotmark: 'single',
+                undef: true,
+                globals: {
+                    window: true,
+                    moment: true,
+                    document: true
+                },
                 // suppress warnings about mixed spaces and tabs
-                "-W099": true,
+                '-W099': true,
                 // supress warnings about Constructors not starting with Capitals
-                "-W055": true
+                '-W055': true
             },
             files: ['js/**/*.js']
         }
