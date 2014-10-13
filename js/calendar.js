@@ -127,10 +127,13 @@
         },
         place: function() {
             var loc = this.$ins.offset(),
-                rentLoc = $($.map(this.$ins.parents(), function(el, i) {
+                // go through and find the parent with the absolute position, to assure the calendar is placed properly
+                absoluteParentLoc = $([].reduce.call(this.$ins.parents(), function(prev, el, index, arr) {
                     var $el = $(el);
-                    return ($el.css("position").indexOf("absolute") > -1 ? el : undefined);
-                })[0]).offset();
+                    return prev || ($el.css("position").indexOf("absolute") > -1 ? el : false);
+                }, false)).offset() || {left: 0, top: 0},
+                subtractAbsoluteParent = this._('appendToBody') && absoluteParentLoc;
+
             // if it's already placed don't place it again
             if(!this.isVisible()) {
                 // otherwise based on options, add it to where it belongs in the dom
@@ -139,8 +142,8 @@
             
             // finally place the calendar popup
             this.$el.css({
-                left: loc.left - (this._("appendToBody") ? 0 : rentLoc.left),
-                top: loc.top + this.$ins.outerHeight() - (this._("appendToBody") ? 0 : rentLoc.top)
+                left: loc.left - (subtractAbsoluteParent ? 0 : absoluteParentLoc.left),
+                top: loc.top + this.$ins.outerHeight() - (subtractAbsoluteParent ? 0 : absoluteParentLoc.top)
             });
         },
         initSuggestions: function() {

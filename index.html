@@ -2,22 +2,24 @@
   <head>
     <title>Calendar Plugin</title>
 
-    <link rel="stylesheet" href="css/lib/bootstrap.css">
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap-theme.css">
     <link rel="stylesheet" href="css/calendar.css">
 
   </head>
   <body>
-    <div class="page-container">
-      <input name="date" id="date" type="text" />
+    <div class="container">
+      <input name="date" id="date1" type="text" />
     </div>
 
-    <script type="text/javascript" src="js/libs/jquery.js"></script>
-    <script type="text/javascript" src="js/libs/moment.js"></script>
+    <script type="text/javascript" src="node_modules/jquery/dist/jquery.js"></script>
+    <script type="text/javascript" src="node_modules/moment/moment.js"></script>
+    <script type="text/javascript" src="node_modules/lodash/lodash.js"></script>
     <script type="text/javascript" src="js/utils.js"></script>
     <script type="text/javascript" src="js/calendar.js"></script>
     <script type="text/javascript">
       $(document).ready(function() {
-          $("#date").calendar({
+          $("#date1").calendar({
             endDate: moment().add("weeks", 2)
           });
       });

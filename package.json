@@ -1,19 +1,27 @@
 {
   "name": "Calendar",
   "version": "0.2.0",
-  "description" : "A complete datepicker solution. Time and range included",
+  "description": "A complete datepicker solution. Time and range included",
   "repository": {
-      "type": "git",
-      "url": "https://github.com/panda01/calendar.git"
+    "type": "git",
+    "url": "https://github.com/panda01/calendar.git"
+  },
+  "author": {
+    "name": "Khalah Jones Golden",
+    "email": "khasan222@gmail.com"
   },
   "devDependencies": {
     "grunt": "~0.4.2",
     "grunt-contrib-jshint": "~0.6.3",
+    "grunt-contrib-less": "^0.11.4",
     "grunt-contrib-nodeunit": "~0.2.0",
-    "grunt-contrib-uglify": "~0.2.2"
+    "grunt-contrib-uglify": "~0.2.2",
+    "grunt-contrib-watch": "^0.6.1"
   },
   "dependencies": {
     "moment": "~2.8.3",
-    "jquery": ">=1.7"
+    "jquery": ">=1.7",
+    "lodash": ">=2.4.1",
+    "bootstrap": "3.2.0"
   }
 }
