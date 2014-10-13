@@ -148,7 +148,7 @@
             });
         },
         initSuggestions: function() {
-            var $ul = _C('ul'),
+            var $ul = _C('ul.suggestions-list'),
                 suggs = this._('suggestions'),
                 sugg = null,
                 $s = null;
@@ -692,7 +692,7 @@
             calendar = $this.data('Calendar'); // try and get the Calendar
             if (opts === undefined || typeof opts === 'object') {
                 // Create a new Calendar
-                $this.data('calendar', (calendar = new Calendar($this, opts)));
+                $this.data('calendar', (calendar = new Calendar($this, (opts || {}))));
             } else if(typeof opts === 'string') {
                 // call it on the object if it exists
                 Calendar.prototype['public_' + opts].apply(calendar, Array.prototype.slice.call(arguments, 1));

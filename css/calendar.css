@@ -3,42 +3,48 @@
 div.popover.js-calendar {
   position: absolute;
   max-width: 650px;
-  color: #fffeff;
   font-size: 13px;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
-/* line 10, /var/www/calendar/css/less/calendar.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/calendar\/css\/less\/calendar\.less}line{font-family:\0000310}}
+/* line 11, /var/www/calendar/css/less/calendar.less */
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/calendar\/css\/less\/calendar\.less}line{font-family:\0000311}}
 div.popover.js-calendar .arrow {
   left: 20px;
 }
-/* line 14, /var/www/calendar/css/less/calendar.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/calendar\/css\/less\/calendar\.less}line{font-family:\0000314}}
-div.popover.js-calendar .glyphicon {
-  cursor: pointer;
-}
-/* line 16, /var/www/calendar/css/less/calendar.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/calendar\/css\/less\/calendar\.less}line{font-family:\0000316}}
-div.popover.js-calendar .glyphicon.prev {
-  float: left;
+/* line 12, /var/www/calendar/css/less/calendar.less */
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/calendar\/css\/less\/calendar\.less}line{font-family:\0000312}}
+div.popover.js-calendar .title {
+  font-size: 14px;
+  font-weight: bold;
 }
 /* line 17, /var/www/calendar/css/less/calendar.less */
 @media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/calendar\/css\/less\/calendar\.less}line{font-family:\0000317}}
+div.popover.js-calendar .glyphicon {
+  cursor: pointer;
+}
+/* line 19, /var/www/calendar/css/less/calendar.less */
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/calendar\/css\/less\/calendar\.less}line{font-family:\0000319}}
+div.popover.js-calendar .glyphicon.prev {
+  float: left;
+}
+/* line 20, /var/www/calendar/css/less/calendar.less */
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/calendar\/css\/less\/calendar\.less}line{font-family:\0000320}}
 div.popover.js-calendar .glyphicon.next {
   float: right;
 }
-/* line 18, /var/www/calendar/css/less/calendar.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/calendar\/css\/less\/calendar\.less}line{font-family:\0000318}}
+/* line 21, /var/www/calendar/css/less/calendar.less */
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/calendar\/css\/less\/calendar\.less}line{font-family:\0000321}}
 div.popover.js-calendar .glyphicon.disable {
   cursor: auto;
   color: #999;
 }
-/* line 23, /var/www/calendar/css/less/calendar.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/calendar\/css\/less\/calendar\.less}line{font-family:\0000323}}
+/* line 26, /var/www/calendar/css/less/calendar.less */
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/calendar\/css\/less\/calendar\.less}line{font-family:\0000326}}
 div.popover.js-calendar .clearfix {
   clear: both;
 }
-/* line 26, /var/www/calendar/css/less/calendar.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/calendar\/css\/less\/calendar\.less}line{font-family:\0000326}}
+/* line 29, /var/www/calendar/css/less/calendar.less */
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/calendar\/css\/less\/calendar\.less}line{font-family:\0000329}}
 div.popover.js-calendar .day,
 div.popover.js-calendar .month,
 div.popover.js-calendar .year,
@@ -47,16 +53,20 @@ div.popover.js-calendar table th {
   text-align: center;
   cursor: pointer;
 }
-/* line 34, /var/www/calendar/css/less/calendar.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/calendar\/css\/less\/calendar\.less}line{font-family:\0000334}}
+/* line 37, /var/www/calendar/css/less/calendar.less */
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/calendar\/css\/less\/calendar\.less}line{font-family:\0000337}}
 div.popover.js-calendar .suggestions {
   float: left;
   min-width: 150px;
+}
+/* line 40, /var/www/calendar/css/less/calendar.less */
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/calendar\/css\/less\/calendar\.less}line{font-family:\0000340}}
+div.popover.js-calendar .suggestions .suggestions-list {
   list-style-type: none;
   padding: 0;
 }
-/* line 39, /var/www/calendar/css/less/calendar.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/calendar\/css\/less\/calendar\.less}line{font-family:\0000339}}
+/* line 44, /var/www/calendar/css/less/calendar.less */
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/calendar\/css\/less\/calendar\.less}line{font-family:\0000344}}
 div.popover.js-calendar .suggestions .suggestion {
   background-color: #428bca;
   border: 1px solid #357ebd;
@@ -65,50 +75,50 @@ div.popover.js-calendar .suggestions .suggestion {
   border-radius: 4px;
   text-align: left;
 }
-/* line 47, /var/www/calendar/css/less/calendar.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/calendar\/css\/less\/calendar\.less}line{font-family:\0000347}}
+/* line 52, /var/www/calendar/css/less/calendar.less */
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/calendar\/css\/less\/calendar\.less}line{font-family:\0000352}}
 div.popover.js-calendar .suggestions .suggestion + .suggestion {
   margin-top: 5px;
 }
-/* line 53, /var/www/calendar/css/less/calendar.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/calendar\/css\/less\/calendar\.less}line{font-family:\0000353}}
+/* line 58, /var/www/calendar/css/less/calendar.less */
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/calendar\/css\/less\/calendar\.less}line{font-family:\0000358}}
 div.popover.js-calendar .calendar {
   float: left;
 }
-/* line 56, /var/www/calendar/css/less/calendar.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/calendar\/css\/less\/calendar\.less}line{font-family:\0000356}}
+/* line 61, /var/www/calendar/css/less/calendar.less */
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/calendar\/css\/less\/calendar\.less}line{font-family:\0000361}}
 div.popover.js-calendar .calendar table {
   font-size: 14px;
   border-collapse: separate;
   min-width: 150px;
   border-spacing: 3px;
 }
-/* line 63, /var/www/calendar/css/less/calendar.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/calendar\/css\/less\/calendar\.less}line{font-family:\0000363}}
+/* line 68, /var/www/calendar/css/less/calendar.less */
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/calendar\/css\/less\/calendar\.less}line{font-family:\0000368}}
 div.popover.js-calendar .calendar .year,
 div.popover.js-calendar .calendar .month,
 div.popover.js-calendar .calendar .day {
   border-radius: 3px;
   padding: 6px;
 }
-/* line 68, /var/www/calendar/css/less/calendar.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/calendar\/css\/less\/calendar\.less}line{font-family:\0000368}}
+/* line 73, /var/www/calendar/css/less/calendar.less */
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/calendar\/css\/less\/calendar\.less}line{font-family:\0000373}}
 div.popover.js-calendar .calendar .year.highlight,
 div.popover.js-calendar .calendar .month.highlight,
 div.popover.js-calendar .calendar .day.highlight {
   background-color: #39b3d7;
   color: #fffeff;
 }
-/* line 72, /var/www/calendar/css/less/calendar.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/calendar\/css\/less\/calendar\.less}line{font-family:\0000372}}
+/* line 77, /var/www/calendar/css/less/calendar.less */
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/calendar\/css\/less\/calendar\.less}line{font-family:\0000377}}
 div.popover.js-calendar .calendar .year:hover,
 div.popover.js-calendar .calendar .month:hover,
 div.popover.js-calendar .calendar .day:hover {
   background-color: #32add0;
   color: #fffeff;
 }
-/* line 76, /var/www/calendar/css/less/calendar.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/calendar\/css\/less\/calendar\.less}line{font-family:\0000376}}
+/* line 81, /var/www/calendar/css/less/calendar.less */
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/calendar\/css\/less\/calendar\.less}line{font-family:\0000381}}
 div.popover.js-calendar .calendar .year.disable,
 div.popover.js-calendar .calendar .month.disable,
 div.popover.js-calendar .calendar .day.disable {
@@ -116,8 +126,8 @@ div.popover.js-calendar .calendar .day.disable {
   cursor: auto;
   background-color: transparent;
 }
-/* line 82, /var/www/calendar/css/less/calendar.less */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/calendar\/css\/less\/calendar\.less}line{font-family:\0000382}}
+/* line 87, /var/www/calendar/css/less/calendar.less */
+@media -sass-debug-info{filename{font-family:file\:\/\/\/var\/www\/calendar\/css\/less\/calendar\.less}line{font-family:\0000387}}
 div.popover.js-calendar .calendar + .suggestions {
   margin-left: 20px;
   margin-right: 7px;

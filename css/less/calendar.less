@@ -1,14 +1,17 @@
-    
+
 
 div.popover.js-calendar {
     position: absolute;
     max-width: 650px;
-    color: #fffeff;
+    // color: #fffeff;
     font-size: 13px;
-    
-    
-    .arrow {
-    left: 20px;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; 
+
+
+    .arrow { left: 20px; }
+    .title {
+        font-size: 14px;
+        font-weight: bold;
     }
 
     .glyphicon {
@@ -34,19 +37,21 @@ div.popover.js-calendar {
     .suggestions {
         float: left;
         min-width: 150px;
-        list-style-type: none;
-        padding: 0;
-        .suggestion {
-        background-color: #428bca;
-        border: 1px solid #357ebd;
-        padding: 2px 5px;
-        text-transform: capitalize;
-        border-radius: 4px;
-        text-align: left;
-        
-        & + .suggestion {
-            margin-top: 5px;
+        .suggestions-list {
+            list-style-type: none;
+            padding: 0;
         }
+        .suggestion {
+            background-color: #428bca;
+            border: 1px solid #357ebd;
+            padding: 2px 5px;
+            text-transform: capitalize;
+            border-radius: 4px;
+            text-align: left;
+
+            & + .suggestion {
+                margin-top: 5px;
+            }
         }
     }
 
@@ -54,10 +59,10 @@ div.popover.js-calendar {
         float: left;
 
         table {
-        font-size: 14px;
-        border-collapse: separate;
-        min-width: 150px;
-        border-spacing: 3px;
+            font-size: 14px;
+            border-collapse: separate;
+            min-width: 150px;
+            border-spacing: 3px;
 
         }
         .year,

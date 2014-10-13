@@ -1,28 +1,29 @@
 <html>
-  <head>
-    <title>Calendar Plugin</title>
+    <head>
+        <title>Calendar Plugin</title>
 
-    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css">
-    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap-theme.css">
-    <link rel="stylesheet" href="css/calendar.css">
+        <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css">
+        <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap-theme.css">
+        <link rel="stylesheet" href="css/calendar.css">
 
-  </head>
-  <body>
-    <div class="container">
-      <input name="date" id="date1" type="text" />
-    </div>
+    </head>
+    <body>
+        <div class="container">
+            <h1>Date Picker</h1>
+            <input name="date" id="date0" type="text" /><br />
+            <input name="date" id="date1" type="text" /><br />
+            <!-- <input name="date" id="date2" type="text" /><br />
+            <input name="date" id="date3" type="text" /><br />
+            <input name="date" id="date4" type="text" /><br />
+            <input name="date" id="date5" type="text" /><br />
+            <input name="date" id="date6" type="text" /><br /> -->
+        </div>
 
-    <script type="text/javascript" src="node_modules/jquery/dist/jquery.js"></script>
-    <script type="text/javascript" src="node_modules/moment/moment.js"></script>
-    <script type="text/javascript" src="node_modules/lodash/lodash.js"></script>
-    <script type="text/javascript" src="js/utils.js"></script>
-    <script type="text/javascript" src="js/calendar.js"></script>
-    <script type="text/javascript">
-      $(document).ready(function() {
-          $("#date1").calendar({
-            endDate: moment().add("weeks", 2)
-          });
-      });
-    </script>
-  </body>
+        <script type="text/javascript" src="node_modules/jquery/dist/jquery.js"></script>
+        <script type="text/javascript" src="node_modules/moment/moment.js"></script>
+        <script type="text/javascript" src="node_modules/lodash/lodash.js"></script>
+        <script type="text/javascript" src="js/utils.js"></script>
+        <script type="text/javascript" src="js/calendar.js"></script>
+        <script type="text/javascript" src="js/script.js"></script>
+    </body>
 </html>
