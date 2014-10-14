@@ -18,6 +18,7 @@
     // color: #fffeff;
     font-size: 13px;
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; 
+    padding: 10px;
 
 
     .arrow { left: 20px; }
@@ -26,8 +27,10 @@
         font-weight: bold;
     }
 
-    .glyphicon {
+    .dir {
         cursor: pointer;
+        font-size: 28px;
+        line-height: 18px;
         &.prev { float: left; }
         &.next { float: right; }
         &.disable {
@@ -45,10 +48,12 @@
     table th {
         text-align: center;
         cursor: pointer;
+        line-height: 18px;
     }
     .suggestions {
         float: left;
         min-width: 150px;
+        margin-right: 10px;
         .suggestions-list {
             list-style-type: none;
             padding: 0;
@@ -60,6 +65,7 @@
             text-transform: capitalize;
             border-radius: 4px;
             text-align: left;
+            color: #eee;
 
             & + .suggestion {
                 margin-top: 5px;

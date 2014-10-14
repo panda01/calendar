@@ -507,11 +507,7 @@
             return _C('table.years').append(this._CHead(2)).append(_C('tbody'));
         },
         _: function(attr, val) {
-            var old = this.settings[attr];
-            // return the parent if this doesn't have the option;
-            if(u.isUndef(old)) {
-                return this._parent._(attr, val);
-            }
+            var old = this._parent._(attr, val);
             if(!u.isUndef(val)) {
                 this.settings[attr] = val;
             }
@@ -545,9 +541,9 @@
         // create a table head
         _CHead: function(span) {
             return _C('thead').append(_C('tr').append(_C('th').attr('colspan', span)
-                    .append(_C('div.glyphicon.glyphicon-chevron-left.prev').html('&lsaquo;'))
                     .append(_C('span.title'))
-                    .append(_C('div.glyphicon.glyphicon-chevron-right.next').html('&rsaquo;'))));
+                    .append(_C('div.dir.prev').html('&lsaquo;'))
+                    .append(_C('div.dir.next').html('&rsaquo;'))));
         },
         _isBefore: function(date, min) {
             min = min || this._('minDate');
@@ -577,10 +573,10 @@
                 copy = date.clone(),        // don't change the date passed in, need it for reference
                 $rowCache = null,
                 bindPagination = function(prevMoment, nextMoment) {
-                    $t.find('.glyphicon.prev')
+                    $t.find('.dir.prev')
                         .data('date', prevMoment)
                         .toggleClass('disable', this._isBefore(prevMoment));
-                    $t.find('.glyphicon.next')
+                    $t.find('.dir.next')
                         .data('date', nextMoment)
                         .toggleClass('disable', this._isAfter(nextMoment));
 
