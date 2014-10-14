@@ -53,6 +53,8 @@ Default:
     input: 'MMMM D, YYYY',
 }
 ```
+###endDate
+Set this option to make the calendar accept two dates for a range
 
 ###appendToBody
 append the popup to the body instead of the parent of the selected input
@@ -69,6 +71,4 @@ The latest possible date the calendars can have
 
 Default: Infinity
 
-###endDate
-Set this option to make the calendar accept two dates for a range
 
