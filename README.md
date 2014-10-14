@@ -22,19 +22,33 @@ The date for the start calendar
 
 Default: moment()
 ```
-{
-    currDate: moment()
-}
+currDate: moment()
 ```
+
+###appendToBody
+append the popup to the body instead of the parent of the selected input
+
+Default: false
+```
+appendToBody: true
+```
+
+###minDate
+The earliest date the calendars can have
+
+Default: -Infinity
+
+###maxDate
+The latest possible date the calendars can have
+
+Default: Infinity
 
 ###endDate
 
 Set this option to make the calendar accept two dates for a range
 
 ```
-{
-    endDate: moment()
-}
+endDate: moment()
 ```
 
 ###suggestions
@@ -42,11 +56,9 @@ Set this option to make the calendar accept two dates for a range
 An array of convenient suggestions for commonly chosen dates
 
 ```
-{
-    suggestions: [{
-        text: "The next two weeks",
-        currDate: moment(),
-        endDate: moment.add('weeks', 2)
-    }]
-}
+suggestions: [{
+    text: "The next two weeks",
+    currDate: moment(),
+    endDate: moment.add('weeks', 2)
+}]
 ```
