@@ -20,7 +20,7 @@ you can use the date Object anywhere moment is used
 
 The date for the start calendar
 
-Default: moment()
+####Default:
 ```
 currDate: moment()
 ```
@@ -29,7 +29,7 @@ currDate: moment()
 
 An array of convenient suggestions for commonly chosen dates
 
-Default:
+####Default:
 ```
 suggestions: [{
     text: 'today',
