@@ -119,7 +119,7 @@
             this.place();
             this.$el.show();
             this.listenForDocumentClick();
-            this.$ins.addClass('visible');
+            this.$ins.addClass('popup-open');
             this.parseOnBlur = true;
         },
         // hide the calendar dropdown
@@ -127,7 +127,7 @@
             this.$el
                 .hide()
                 .detach();
-            this.$ins.removeClass('visible');
+            this.$ins.removeClass('popup-open');
         },
         place: function() {
             var loc = this.$ins.offset(),
