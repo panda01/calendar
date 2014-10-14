@@ -25,6 +25,27 @@ Default: moment()
 currDate: moment()
 ```
 
+###suggestions
+
+An array of convenient suggestions for commonly chosen dates
+
+Default:
+```
+suggestions: [{
+    text: 'today',
+    currDate: moment()
+}, {
+    text: 'Yesterday',
+    currDate: moment().subtract('day', 1)
+}, {
+    text: '1 week ago',
+    currDate: moment().subtract('week', 1)
+}, {
+    text: '1 month ago',
+    currDate: moment().subtract('month', 1)
+}]
+```
+
 ###appendToBody
 append the popup to the body instead of the parent of the selected input
 
@@ -51,22 +72,3 @@ Set this option to make the calendar accept two dates for a range
 endDate: moment()
 ```
 
-###suggestions
-
-An array of convenient suggestions for commonly chosen dates
-
-```
-suggestions: [{
-    text: 'today',
-    currDate: moment()
-}, {
-    text: 'Yesterday',
-    currDate: moment().subtract('day', 1)
-}, {
-    text: '1 week ago',
-    currDate: moment().subtract('week', 1)
-}, {
-    text: '1 month ago',
-    currDate: moment().subtract('month', 1)
-}]
-```
