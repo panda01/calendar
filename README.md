@@ -18,10 +18,35 @@ you can use the date Object anywhere moment is used
 
 ###currDate
 
-Default: moment()
+The date for the start calendar
 
+Default: moment()
 ```
 {
     currDate: moment()
+}
+```
+
+###endDate
+
+Set this option to make the calendar accept two dates for a range
+
+```
+{
+    endDate: moment()
+}
+```
+
+###suggestions
+
+An array of convenient suggestions for commonly chosen dates
+
+```
+{
+    suggestions: [{
+        text: "The next two weeks",
+        currDate: moment(),
+        endDate: moment.add('weeks', 2)
+    }]
 }
 ```
