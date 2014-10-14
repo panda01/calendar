@@ -6,7 +6,8 @@
 
         // date picker with range
         $('#date1').calendar({
-            endDate: moment().add('weeks', 2)
+            endDate: moment().add('weeks', 2),
+            suggestions: null
         });
 
         $('#date1').click();

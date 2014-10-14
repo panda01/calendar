@@ -314,7 +314,7 @@
         // is this a range calendar or does it just have one date to return
         _hasEnd: function() { return !!this._('endDate'); },
         // does it have suggestions?
-        _hasSuggestions: function() { return this._('suggestions').length > 0; }
+        _hasSuggestions: function() { return this._('suggestions') && this._('suggestions').length > 0; }
     });
     
     function $Cal(date, par) {
