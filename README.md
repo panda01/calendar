@@ -1,6 +1,11 @@
 #Calendar
 
-The last date picker you'll ever need!
+A beautiful Date Picker with Range and suggestion options
+
+##Dependancies
+- jQuery >= 1.7.1
+- moment >= 2.8.3
+- boostrap >= 3.2.0 working on removing this dependency
 
 ##Usage
 ```js
@@ -8,6 +13,13 @@ The last date picker you'll ever need!
 ```
 
 ##Options
+
+you can use the date Object anywhere moment is used
+
+Default: moment()
+
 ```
-currDate: moment() || new Date();
+{
+    currDate: moment()
+}
 ```

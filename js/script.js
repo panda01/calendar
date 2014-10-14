@@ -2,7 +2,9 @@
     'use strict';
     $(document).ready(function() {
         // Regular date picker
-        $('#date0').calendar();
+        $('#date0').calendar({
+            currDate: new Date()
+        });
 
         // date picker with range
         $('#date1').calendar({
