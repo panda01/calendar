@@ -57,8 +57,16 @@ An array of convenient suggestions for commonly chosen dates
 
 ```
 suggestions: [{
-    text: "The next two weeks",
-    currDate: moment(),
-    endDate: moment.add('weeks', 2)
+    text: 'today',
+    currDate: moment()
+}, {
+    text: 'Yesterday',
+    currDate: moment().subtract('day', 1)
+}, {
+    text: '1 week ago',
+    currDate: moment().subtract('week', 1)
+}, {
+    text: '1 month ago',
+    currDate: moment().subtract('month', 1)
 }]
 ```
