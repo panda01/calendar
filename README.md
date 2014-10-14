@@ -1,5 +1,4 @@
 #Calendar
-
 A beautiful Date Picker with Range and suggestion options
 
 ##Dependancies
@@ -13,11 +12,9 @@ A beautiful Date Picker with Range and suggestion options
 ```
 
 ##Options
-
 you can use the date Object anywhere moment is used
 
 ###currDate
-
 The date for the start calendar
 
 Default:
@@ -46,13 +43,21 @@ suggestions: [{
 }]
 ```
 
+###format
+A map of the formats for different displays of the date
+
+Default:
+```js
+{
+    dow: 'dd',
+    input: 'MMMM D, YYYY',
+}
+```
+
 ###appendToBody
 append the popup to the body instead of the parent of the selected input
 
 Default: false
-```js
-appendToBody: true
-```
 
 ###minDate
 The earliest date the calendars can have
@@ -65,9 +70,5 @@ The latest possible date the calendars can have
 Default: Infinity
 
 ###endDate
-
 Set this option to make the calendar accept two dates for a range
-```js
-endDate: moment()
-```
 
