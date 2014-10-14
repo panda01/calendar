@@ -9,6 +9,6 @@
             endDate: moment().add('weeks', 2)
         });
 
-        $('#date0').click();
+        $('#date1').click();
     });
 }(window.jQuery));
