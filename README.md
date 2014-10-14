@@ -20,7 +20,7 @@ you can use the date Object anywhere moment is used
 
 The date for the start calendar
 
-####Default:
+#####Default:
 ```
 currDate: moment()
 ```
@@ -29,7 +29,7 @@ currDate: moment()
 
 An array of convenient suggestions for commonly chosen dates
 
-####Default:
+#####Default:
 ```
 suggestions: [{
     text: 'today',
@@ -49,7 +49,7 @@ suggestions: [{
 ###appendToBody
 append the popup to the body instead of the parent of the selected input
 
-Default: false
+#####Default: false
 ```
 appendToBody: true
 ```
@@ -57,12 +57,18 @@ appendToBody: true
 ###minDate
 The earliest date the calendars can have
 
-Default: -Infinity
+#####Default:
+```
+-Infinity
+```
 
 ###maxDate
 The latest possible date the calendars can have
 
-Default: Infinity
+#####Default: 
+```
+Infinity
+```
 
 ###endDate
 
