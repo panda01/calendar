@@ -11,6 +11,11 @@ module.exports = function(grunt) {
                 files: {
                     "css/calendar.css": "css/less/calendar.less"
                 }
+            },
+            prod: {
+                files: {
+                    'dist/calendar.css': 'css/less/calendar.less'
+                }
             }
         },
         jshint: {
@@ -37,12 +42,29 @@ module.exports = function(grunt) {
                 '-W055': true
             },
             files: ['js/**/*.js']
+        },
+        watch: {
+            less: {
+                files: 'css/**/*.less',
+                tasks: 'less:development',
+                options: {
+                    atBegin: true
+                }
+            },
+            scripts: {
+                files: 'js/**/*.js',
+                tasks: 'jshint:files',
+                options: {
+                    atBegin: true
+                }
+            }
         }
     });
 
 
     grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-contrib-jshint');
+    grunt.loadNpmTasks('grunt-contrib-watch');
 
-    grunt.registerTask('default', ['less']);
+    grunt.registerTask('default', ['less', 'jshint']);
 };
