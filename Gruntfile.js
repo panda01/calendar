@@ -48,14 +48,16 @@ module.exports = function(grunt) {
                 files: 'css/**/*.less',
                 tasks: 'less:development',
                 options: {
-                    atBegin: true
+                    atBegin: true,
+                    livereload: true
                 }
             },
             scripts: {
                 files: 'js/**/*.js',
                 tasks: 'jshint:files',
                 options: {
-                    atBegin: true
+                    atBegin: true,
+                    livereload: true
                 }
             }
         }

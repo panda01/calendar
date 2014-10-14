@@ -8,5 +8,7 @@
         $('#date1').calendar({
             endDate: moment().add('weeks', 2)
         });
+
+        $('#date0').click();
     });
 }(window.jQuery));

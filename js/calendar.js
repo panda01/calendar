@@ -65,19 +65,24 @@
                 this.$ins.append(this.$suggestion = _C('div.suggestion'));
             }
 
+            this.initEvents();
+
+            // hide the input give to us
+            this.$selIn.hide();
+        },
+        initEvents: function() {
+            var showFn = function() {
+                if(!this.isVisible()) {
+                    this.show();
+                }
+            }.bind(this);
             // Attach some events
             this.$ins.on({
-                'click.calendar': function() {
-                    if(!this.isVisible()) {
-                        this.show();
-                    }
-                }.bind(this),
-                'focus.calendar': function() {
-                    if(!this.isVisible()) {
-                        this.show();
-                    }
-                }.bind(this)
+                'click.calendar': showFn,
+                'focus.calendar': showFn
             });
+
+            this.$selIn.on('click', showFn);
 
             // handle clicking of suggestions
             this.$el.on('click.calendar', '.suggestion', function(e) {
@@ -85,8 +90,6 @@
                 this.hide();
             }.bind(this));
 
-            // hide the input give to us
-            this.$selIn.hide();
         },
         listenForDocumentClick: function() {
             var func = function(e) {
