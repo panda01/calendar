@@ -16,6 +16,8 @@ A beautiful Date Picker with Range and suggestion options
 
 you can use the date Object anywhere moment is used
 
+###currDate
+
 Default: moment()
 
 ```
