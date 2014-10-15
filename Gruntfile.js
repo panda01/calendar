@@ -60,6 +60,15 @@ module.exports = function(grunt) {
                     livereload: true
                 }
             }
+        },
+        jasmine: {
+            test: {
+                src: ['bower_components/jquery/dist/jquery.js', 'bower_components/moment/moment.js', 'js/calendar.js'],
+                options: {
+                    specs: 'spec/spec.js',
+                    vendor: ['moment']
+                }
+            }
         }
     });
 
@@ -67,6 +76,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.loadNpmTasks('grunt-contrib-jasmine');
 
     grunt.registerTask('default', ['less', 'jshint']);
 };
