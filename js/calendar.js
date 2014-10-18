@@ -255,8 +255,22 @@
         // Either return false, or the suggestion that is currently being used
         // if name is specified, return the suggestion with that name regardless of which one we're using
         getSuggestion: function(name) {
+            // @param curr the object representing the suggestion completed
+            // Ex.
+            // {
+            //      text: "tomorrow",
+            //      currDate: moment(),
+            //      endDate: moment().add('days', 1)
+            // }
+            var hasEnd = this._hasEnd(),
+                startDate = this.cals[0]._date,
+                endDate = hasEnd ? this.cals[1]._date : null;
             return this._('suggestions').reduce(function(old, curr) {
-                return old || ((name && curr.text === name) || (!name && curr.currDate === this.cals[0]._date && (!this._hasEnd() || (this._hasEnd() && curr.endDate === this.cals[1]._date))) ? curr : old);
+                return old || // we've already foiund one
+                    ((name && curr.text === name) || // the name matches the name of the suggestion
+                    (!name && curr.currDate === startDate && // there is no name and the date matches the current date
+                     // current cal doesn't have end, or, it has an end and it matches this end
+                     (!hasEnd || (hasEnd && curr.endDate === endDate))) ? curr : old);
             }.bind(this), false);
         },
         // set a marker for which suggestion was clicked
@@ -269,7 +283,7 @@
         },
         // takes an object with both dates for range calendars, or just the single date for regular ones
         setDate: function(obj) {
-            var set = function(start, end) {
+            var _setDate = function(start, end) {
                 this.cals[0]._setDate(start);
                 if(end) {
                     this.cals[1]._setDate(end);
@@ -278,12 +292,12 @@
             if(obj.text) {
                 obj = this.getSuggestion(obj.text) || obj;
                 this.setSuggestion(obj.text);
-                set(obj.currDate, obj.endDate);
+                _setDate(obj.currDate, obj.endDate);
             } else if(this._hasEnd()) {     // A range calendar without suggestions
-                set(obj.currDate, obj.endDate);
+                _setDate(obj.currDate, obj.endDate);
                 this.setSuggestion(obj.text);
             } else {    // otherwise expect to be passed a moment object to be set on the calendar
-                set(obj);
+                _setDate(obj);
             }
             this.render();
         },
@@ -381,7 +395,7 @@
                         case 38: 		    // up
                         case 39: 		    // right
                         case 40: 		    // down
-                            this._setDate(this._date.clone()[evt.which < 39 ? 'subtract' : 'add']((evt.which % 2 === 0 ? 'weeks' : 'days'), 1));
+                            this._setDate(this._date.clone()[evt.which < 39 ? 'subtract' : 'add'](1, (evt.which % 2 === 0 ? 'weeks' : 'days')));
                             this._parent.setSuggestion(false);
                             this.update();
                             this._showView();
@@ -490,7 +504,7 @@
             while( --count >= 0 ){
                 // create the th and append the month markup
                 $hand.append(_C('th').append(day.format(this._('format').dow)));
-                day.add('days', 1); // for every day
+                day.add(1, 'day'); // for every day
             }
 
             // append the body for the days
@@ -603,7 +617,7 @@
                                 .html(m.format('MMMM YYYY'))
                                 .data('date', m.clone());
 
-                            bindPagination(m.clone().date(0), m.clone().add('month', 1).date(1));
+                            bindPagination(m.clone().date(0), m.clone().add(1, 'month').date(1));
                             // set to the first day of the month then the first day of that week
                             m.date(1).day(0);
                         },
@@ -613,7 +627,7 @@
                             $r.append( makeTd(m, 'D'));
 
                             // increment and continue
-                            m.add('days', 1);
+                            m.add(1, 'day');
 
                             // if it's the last day of the week
                             if(m.day() === 0) {
@@ -628,7 +642,7 @@
                             m.month(0);
                             // set the year for the title
                             $table.find('.title').html(m.format('YYYY'));
-                            bindPagination(m.clone().subtract('year', 1).dayOfYear(366), m.clone().add('year', 1).dayOfYear(1));
+                            bindPagination(m.clone().subtract('year', 1).dayOfYear(366), m.clone().add(1, 'year').dayOfYear(1));
                         },
                         stop: function(m) { return m.month() === 0 && !m.isSame(date, 'month'); },
                         loop: function(m, $r) {
@@ -636,7 +650,7 @@
                             $r.append(makeTd(m, 'MMM'));
 
                             // increment and continue
-                            m.add('months', 1);
+                            m.add(1, 'month');
                             if(m.month() % 2 === 0 ) {
                                 return _C('tr').appendTo($hand);
                             }
@@ -650,7 +664,7 @@
                             m.year(y = (y - y % 10));
                             // set the decade range to the title
                             $table.find('.title').html(y + ' - ' + (y+9));
-                            bindPagination(m.clone().subtract('year', 10).dayOfYear(366), m.clone().add('years', 10).dayOfYear(1));
+                            bindPagination(m.clone().subtract('year', 10).dayOfYear(366), m.clone().add(10, 'years').dayOfYear(1));
                         },
                         stop: function(m) { return m.isAfter(date) && (m.year() % 10 === 0); },
                         loop: function(m, $r) {
@@ -658,7 +672,7 @@
                             $r.append(makeTd(m, 'YYYY'));
 
                             // increment and continue
-                            m.add('years', 1);
+                            m.add(1, 'year');
                             if(m.year() % 2 === 0 ) {
                                 return _C('tr').appendTo($hand);
                             }

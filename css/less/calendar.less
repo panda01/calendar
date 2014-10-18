@@ -7,12 +7,28 @@
     padding: 6px 12px;
     border-radius: 4px;
     margin-bottom: 10px;
+    height: 36px;
     .box-sizing(border-box);
     .js-input {
         border: 0 none transparent;
         outline: none;
         color: #555;
         font-family: @cal_font;
+    }
+    &.show-suggestion {
+        .js-input,
+        .dash {
+            display: none;
+        }
+        &.popup-open {
+            .js-input,
+            .dash {
+                display: inline-block;
+            }
+            .suggestion {
+                display: none;
+            }
+        }
     }
     &.popup-open {
         border: 1px solid @cal_hl_color;
@@ -60,10 +76,17 @@
         cursor: pointer;
         line-height: 18px;
     }
+    .dow > th {
+        padding-top: 3px;
+    }
     .suggestions {
         float: left;
         min-width: 150px;
         margin-right: 10px;
+        .title {
+            margin-top: 2px;
+            margin-bottom: 3px;
+        }
         .suggestions-list {
             list-style-type: none;
             padding: 0;
@@ -72,7 +95,6 @@
             background-color: @sugg_bg_color;
             border: 1px solid #357ebd;
             padding: 2px 5px;
-            text-transform: capitalize;
             border-radius: 4px;
             text-align: left;
             color: #eee;
