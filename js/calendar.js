@@ -312,11 +312,6 @@
             return old;
         },
 
-        _isSame: function(date, tolerance, otherDate) {
-            otherDate = otherDate || this._date;
-            tolerance = tolerance || 'day';
-            return _cleanDate(date).isSame(otherDate, tolerance);
-        },
         _isBefore: function(date, min) {
             min = min || this._('minDate');
             return (min === -Infinity ? false : _cleanDate(date) < _cleanDate(min));
