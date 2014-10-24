@@ -1,6 +1,12 @@
 #Calendar
 A beautiful Date Picker with Range and suggestion options
 
+##Features
+- Suggestions- being able to make certain dates easily accesible
+- Range- have a date range instead of a singular date
+- Keyboard shortcuts - Intuitive keyboard shortcuts for calendar
+- Date inference - Accepts different formats and tries to infer date eg. January 12 2012 or 01/12/2012
+
 ##Dependancies
 - jQuery >= 1.7.1
 - moment >= 2.8.3

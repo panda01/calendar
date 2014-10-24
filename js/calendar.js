@@ -184,13 +184,13 @@
                 currDate: moment()
             }, {
                 text: 'Yesterday',
-                currDate: moment().subtract('day', 1)
+                currDate: moment().subtract(1, 'day')
             }, {
                 text: '1 week ago',
-                currDate: moment().subtract('week', 1)
+                currDate: moment().subtract(1, 'week')
             }, {
                 text: '1 month ago',
-                currDate: moment().subtract('month', 1)
+                currDate: moment().subtract(1, 'month')
             }],
             appendToBody: false,
             format: {
@@ -266,17 +266,19 @@
                 startDate = this.cals[0]._date,
                 endDate = hasEnd ? this.cals[1]._date : null;
             return this._('suggestions').reduce(function(old, curr) {
-                return old || // we've already foiund one
-                    ((name && curr.text === name) || // the name matches the name of the suggestion
-                    (!name && curr.currDate === startDate && // there is no name and the date matches the current date
-                     // current cal doesn't have end, or, it has an end and it matches this end
-                     (!hasEnd || (hasEnd && curr.endDate === endDate))) ? curr : old);
+                return old || // we've already found one
+                    ((name && curr.text.toLowerCase() === name.toLowerCase()) || // the name matches the name of the suggestion
+                    (!name && curr.currDate.isSame(startDate, 'day') && // there is no name and the date matches the current date
+                    // current cal doesn't have end, or, it has an end and it matches this end
+                    (!hasEnd || (hasEnd && curr.endDate.isSame(endDate, 'day')))) ? curr : old);
             }.bind(this), false);
         },
         // set a marker for which suggestion was clicked
         setSuggestion: function(name) {
-            if(typeof name !== 'undefined') {
+            if(typeof name !== 'undefined' && name !== false) {
                 this.currentSuggestion = name;
+            // } else { // else figure out whether this is a suggestion
+                // this.currentSuggestion = (this.getSuggestion().name
             }
             this.$suggestion.html(this.currentSuggestion || '');
             this.$ins.toggleClass('show-suggestion', !!this.currentSuggestion);
@@ -470,7 +472,7 @@
             // change the input value and width 
             this.$in
                 .val(d)
-                .width(dWidth + 8);         // Add 8 pixels just in case
+                .width(dWidth + 3);         // Add 8 pixels just in case
         },
         // tries to parse the inputs value
         // and calls update with either the new date,
@@ -637,7 +639,7 @@
                             m.month(0);
                             // set the year for the title
                             $table.find('.title').html(m.format('YYYY'));
-                            bindPagination(m.clone().subtract('year', 1).dayOfYear(366), m.clone().add(1, 'year').dayOfYear(1));
+                            bindPagination(m.clone().subtract(1, 'year').dayOfYear(366), m.clone().add(1, 'year').dayOfYear(1));
                         },
                         stop: function(m) { return m.month() === 0 && !m.isSame(date, 'month'); },
                         loop: function(m, $r) {
@@ -659,7 +661,7 @@
                             m.year(y = (y - y % 10));
                             // set the decade range to the title
                             $table.find('.title').html(y + ' - ' + (y+9));
-                            bindPagination(m.clone().subtract('year', 10).dayOfYear(366), m.clone().add(10, 'years').dayOfYear(1));
+                            bindPagination(m.clone().subtract(10, 'years').dayOfYear(366), m.clone().add(10, 'years').dayOfYear(1));
                         },
                         stop: function(m) { return m.isAfter(date) && (m.year() % 10 === 0); },
                         loop: function(m, $r) {

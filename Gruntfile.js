@@ -59,6 +59,11 @@ module.exports = function(grunt) {
                     atBegin: true,
                     livereload: true
                 }
+            },
+            test: {
+                files: 'spec/**/*.js',
+                tasks: 'jasmine:test',
+                options: { atBegin: true }
             }
         },
         jasmine: {
