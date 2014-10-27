@@ -29,5 +29,7 @@
         });
 
         $('#date1').click();
+
+        window.calendarInstance = $('#date1').data('calendar');
     });
 }(window.jQuery));

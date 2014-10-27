@@ -274,6 +274,7 @@
             }.bind(this), false);
         },
         // set a marker for which suggestion was clicked
+        // TODO change the name of this function, very misleading
         setSuggestion: function(name) {
             if(typeof name !== 'undefined' && name !== false) {
                 this.currentSuggestion = name;
@@ -325,7 +326,7 @@
         // is this a range calendar or does it just have one date to return
         _hasEnd: function() { return !!this._('endDate'); },
         // does it have suggestions?
-        _hasSuggestions: function() { return this._('suggestions') && this._('suggestions').length > 0; }
+        _hasSuggestions: function() { var sugg = this._('suggestions'); return sugg && sugg.length > 0; }
     });
     
     function $Cal(date, par) {
@@ -472,13 +473,13 @@
             // change the input value and width 
             this.$in
                 .val(d)
-                .width(dWidth + 3);         // Add 8 pixels just in case
+                .width(dWidth);
         },
         // tries to parse the inputs value
         // and calls update with either the new date,
         // or the old date if the new one isn't valid
         parse: function() {
-            var s = moment($.trim(this.$in.val()));
+            var s = moment(new Date(this.$in.val()));
             // if they gave us something valid, set the current date
             if(s.isValid()) {
                 s = this._setDate(s);
